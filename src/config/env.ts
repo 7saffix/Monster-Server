@@ -8,6 +8,7 @@ const envConfig = {
   db_url: process.env.MONGO_URL as string,
   access_secret: process.env.ACCESS_SECRET as string,
   access_expires_in: process.env.ACCESS_EXPIRES_IN,
+  node_env: process.env.NODE_ENV,
 };
 
 export default envConfig;
