@@ -9,13 +9,15 @@ const login = async (payload: Partial<IUser>) => {
 
   const user = await User.findOne({ email });
 
-  console.log(user);
-
   if (!user) throw new Error("Email does not exist");
   const matchPassword = await bcrypt.compare(password as string, user.password);
   if (!matchPassword) throw new Error("Incorrect password ");
 
-  const jwtPayload = { id: user._id, email: user.email } as JwtPayload;
+  const jwtPayload = {
+    id: user._id,
+    email: user.email,
+    role: user.role,
+  } as JwtPayload;
   const accessToken = jwt.sign(jwtPayload, envConfig.access_secret, {
     expiresIn: envConfig.access_expires_in,
   } as SignOptions);

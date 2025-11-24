@@ -14,5 +14,16 @@ const userRegister = catchAsync(
     });
   }
 );
+const getMe = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = await userService.getMe(req.user.id);
+    sendResponse(res, {
+      success: true,
+      statusCode: 200,
+      message: "Profile retrieved successfully",
+      data: user,
+    });
+  }
+);
 
-export const userController = { userRegister };
+export const userController = { userRegister, getMe };

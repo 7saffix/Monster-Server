@@ -6,6 +6,13 @@ import { sendResponse } from "../../utils/sendResponse";
 const login = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const user = await authService.login(req.body);
+
+    res.cookie("accessToken", user.accessToken, {
+      httpOnly: true,
+      secure: false,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
     sendResponse(res, {
       success: true,
       statusCode: 200,
