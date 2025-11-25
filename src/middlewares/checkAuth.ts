@@ -5,7 +5,8 @@ import envConfig from "../config/env";
 import User from "../modules/user/user.model";
 
 export const checkAuth =
-  () => async (req: Request, res: Response, next: NextFunction) => {
+  (...authRole: string[]) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const token = req.cookies.accessToken;
 
@@ -20,6 +21,9 @@ export const checkAuth =
 
       const user = await User.findOne({ email: verifiedToken.email });
       if (!user) throw new AppError(404, "user not found.");
+
+      if (!authRole.includes(verifiedToken.role))
+        throw new AppError(403, "you are not permitted to this route");
 
       req.user = verifiedToken;
       next();
